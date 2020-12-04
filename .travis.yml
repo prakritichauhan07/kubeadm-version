@@ -3,9 +3,19 @@ sudo: required
 services:
 - docker
 
+jobs:
+  include:
+    - stage: Build and Publist Docker images
+      arch: amd64
+      env: ARCH=amd64
+    - arch: arm64
+      env:
+        - ARCH=arm64
+
 script:
 - >
-- docker build -t wise2c/kubeadm-version:$TRAVIS_BRANCH .
-- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker push wise2c/kubeadm-version:$TRAVIS_BRANCH
-- docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list
+- echo $TRAVIS_CPU_ARCH
+- docker build -t wise2c/kubeadm-version:$TRAVIS_BRANCH-$ARCH .
+#- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#- docker push wise2c/kubeadm-version:$TRAVIS_BRANCH
+#- docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list
