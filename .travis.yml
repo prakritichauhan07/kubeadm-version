@@ -14,7 +14,7 @@ script:
   else
   arch="";
   fi
-- docker build -t sakshi9715/kubeadm-version:$TRAVIS_BRANCH$TRAVIS_CPU_ARCH .
+- docker build -t sakshi9715/kubeadm-version:$TRAVIS_BRANCH$arch .
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker push sakshi9715/kubeadm-version:$TRAVIS_BRANCH$TRAVIS_CPU_ARCH
-- docker run --rm --name=kubeadm-version sakshi9715/kubeadm-version:$TRAVIS_BRANCH$TRAVIS_CPU_ARCH kubeadm config images list
+- docker push sakshi9715/kubeadm-version:$TRAVIS_BRANCH$arch
+- docker run --rm --name=kubeadm-version sakshi9715/kubeadm-version:$TRAVIS_BRANCH$arch kubeadm config images list
