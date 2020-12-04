@@ -9,7 +9,13 @@ services:
 
 script:
 - >
-- docker build -t sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH .
 - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-- docker push sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH
-- docker run --rm --name=kubeadm-version sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH kubeadm config images list
+- if [ "${TRAVIS_CPU_ARCH}" == "arm64" ]; then
+  docker build -t sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH .
+  docker push sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH
+  docker run --rm --name=kubeadm-version sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH kubeadm config images list
+  else
+  docker build -t sakshi9715/kubeadm-version:$TRAVIS_BRANCH .
+  docker push sakshi9715/kubeadm-version:$TRAVIS_BRANCH
+  docker run --rm --name=kubeadm-version sakshi9715/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list
+  fi
