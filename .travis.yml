@@ -1,21 +1,15 @@
 sudo: required
 
+arch:
+  - amd64
+  - arm64
+
 services:
 - docker
 
-jobs:
-  include:
-    - stage: Build and Publist Docker images
-      arch: amd64
-      env: ARCH=amd64
-    - arch: arm64
-      env:
-        - ARCH=arm64
-
 script:
 - >
-- echo $TRAVIS_CPU_ARCH
-- docker build -t wise2c/kubeadm-version:$TRAVIS_BRANCH-$ARCH .
-#- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-#- docker push wise2c/kubeadm-version:$TRAVIS_BRANCH
-#- docker run --rm --name=kubeadm-version wise2c/kubeadm-version:$TRAVIS_BRANCH kubeadm config images list
+- docker build -t sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH .
+- docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+- docker push sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH
+- docker run --rm --name=kubeadm-version sakshi9715/kubeadm-version:$TRAVIS_BRANCH-$TRAVIS_CPU_ARCH kubeadm config images list
